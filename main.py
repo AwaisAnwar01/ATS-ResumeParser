@@ -5,14 +5,24 @@ from fastapi.responses import JSONResponse
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from PyPDF2 import PdfReader
+from fastapi.middleware.cors import CORSMiddleware
 
 # Load environment variables from .env file
 load_dotenv()
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Access the OpenAI API key from the environment
 openai_api_key = os.getenv('OPENAI_API_KEY')
 
-app = FastAPI()
+
 
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create upload folder if it doesn't exist
